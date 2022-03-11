@@ -1,6 +1,5 @@
 package org.example;
 
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -36,7 +35,7 @@ public class PrimaryController {
     private TableView<org.example.Runner> infoRun;
 
     @FXML
-    private Label labelNameT,largeTrack;
+    private Label labelNameT, largeTrack;
 
     @FXML
     private TextField nameRunner, nameTrack;
@@ -55,7 +54,7 @@ public class PrimaryController {
         chooseRunnerAction();
     }
 
-    public void useTrackAction(){
+    public void useTrackAction() {
         String name = nameTrack.getText();
         int distance = Integer.parseInt(distanceTrack.getText());
         labelNameT.setText(name);
@@ -63,7 +62,7 @@ public class PrimaryController {
         distanceT = distance;
     }
 
-    public void chooserTypeCar(){
+    public void chooserTypeCar() {
         ObservableList<String> list = typeCar.getItems();
         list.add("McQueen");
         list.add("Convertible");
@@ -72,16 +71,17 @@ public class PrimaryController {
         typeCar.setItems(list);
     }
 
-    public void saveRunnerAction(){
+    public void saveRunnerAction() {
         int id = Integer.parseInt(idRunner.getText());
         int distance = 0;
         String name = nameRunner.getText();
         String type = typeCar.getValue();
         Color color = colorRunner.getValue();
-        addRunner(id, distance, name, color , type);
+        addRunner(id, distance, name, color, type);
+        chooseRunnerAction();
     }
 
-    public void chooseRunnerAction(){
+    public void chooseRunnerAction() {
         ObservableList<Integer> list = addRunner.getItems();
         for (Runner runner : runners) {
             list.add(runner.getId());
@@ -90,7 +90,7 @@ public class PrimaryController {
     }
 
 
-    public void addRunnerAction(){
+    public void addRunnerAction() {
         try {
             int id = addRunner.getValue();
 
@@ -105,12 +105,71 @@ public class PrimaryController {
                     distance.setCellValueFactory(new PropertyValueFactory<>("distance"));
                 }
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
             alert.setHeaderText("Error");
             alert.setContentText(e.getMessage());
         }
+    }
+
+    public void startAction() {
+        Run run = new Run();
+        run.start();
+    }
+
+    public void pauseAction() {
+        Run run = new Run();
+        run.pauseRun();
+    }
+
+    public void restartAction() {
+        Run run = new Run();
+        run.restartRun();
+    }
+
+    public void resetAction() {
+        Run run = new Run();
+        run.resetRun();
+    }
+
+    class Run extends Thread {
+
+        public void start() {
+
+        }
+
+        public void pauseRun() {
+            try {
+                this.wait();
+            } catch (InterruptedException e) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText("Error");
+                alert.setContentText(e.getMessage());
+            }
+        }
+
+        public void restartRun() {
+            try {
+                this.notify();
+            } catch (Exception e) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText("Error");
+                alert.setContentText(e.getMessage());
+            }
+        }
+
+        public void resetRun() {
+            runProgress.setProgress(0);
+            for (Runner runner : runners) {
+                runner.setDistance(0);
+            }
+        }
+
+
+
     }
 
 

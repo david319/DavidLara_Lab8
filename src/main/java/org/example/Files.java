@@ -1,9 +1,9 @@
 package org.example;
 
 import javafx.scene.control.Alert;
-import javafx.scene.control.ColorPicker;
 import javafx.scene.paint.Color;
 
+import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.ArrayList;
 
@@ -11,9 +11,25 @@ public class Files {
 
     static ArrayList<Runner> runners = new ArrayList<>();
 
+    public static boolean verifyId(int id) {
+        for (Runner runner : runners) {
+            if (runner.getId() == id) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText("Error");
+                alert.setContentText("Runner with this id already exists");
+                alert.showAndWait();
+                return false;
+            }
+        }
+        return true;
+    }
+
     public static void addRunner(int id, int distance, String nameR, Color color, String car) {
-        runners.add(new Runner(id, distance, nameR, color, car));
-        saveRunners();
+        if (verifyId(id)) {
+            runners.add(new Runner(id, distance, nameR, color, car));
+            saveRunners();
+        }
     }
 
     public static void saveRunners() {
@@ -39,24 +55,25 @@ public class Files {
     public static void loadRunners() {
         try {
             RandomAccessFile file = new RandomAccessFile("runners.txt", "r");
-            while (true) {
-                int id = file.readInt();
-                int distance = file.readInt();
-                String nameR = file.readUTF();
-                double color = file.readDouble();
-                String car = file.readUTF();
-                if (id == -1) {
-                    break;
+            if (file.length() > 0) {
+                while (true) {
+                    int id = file.readInt();
+                    int distance = file.readInt();
+                    String nameR = file.readUTF();
+                    double color = file.readDouble();
+                    String car = file.readUTF();
+                    if (id == -1) {
+                        break;
+                    }
+                    addRunner(id, distance, nameR, Color.gray(color), car);
                 }
-                addRunner(id, distance, nameR, Color.gray(color), car);
+                file.close();
             }
-            file.close();
-        } catch (Exception e) {
+        } catch (IOException e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
             alert.setHeaderText("Error");
             alert.setContentText(e.getMessage());
-            alert.showAndWait();
         }
     }
 
