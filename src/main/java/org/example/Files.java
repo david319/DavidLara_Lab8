@@ -1,6 +1,7 @@
 package org.example;
 
 import javafx.scene.control.Alert;
+import javafx.scene.control.ColorPicker;
 import javafx.scene.paint.Color;
 
 import java.io.IOException;
@@ -25,7 +26,7 @@ public class Files {
         return true;
     }
 
-    public static void addRunner(int id, int distance, String nameR, Color color, String car) {
+    public static void addRunner(int id, int distance, String nameR, String color, String car) {
         if (verifyId(id)) {
             runners.add(new Runner(id, distance, nameR, color, car));
             saveRunners();
@@ -39,7 +40,7 @@ public class Files {
                 file.writeInt(runner.getId());
                 file.writeInt(runner.getDistance());
                 file.writeUTF(runner.getNameR());
-                file.writeDouble(runner.getColor().getRed());
+                file.writeUTF(runner.getColor());
                 file.writeUTF(runner.getCar());
             }
             file.close();
@@ -60,12 +61,12 @@ public class Files {
                     int id = file.readInt();
                     int distance = file.readInt();
                     String nameR = file.readUTF();
-                    double color = file.readDouble();
+                    String color = file.readUTF();
                     String car = file.readUTF();
                     if (id == -1) {
                         break;
                     }
-                    addRunner(id, distance, nameR, Color.gray(color), car);
+                    addRunner(id, distance, nameR, color, car);
                 }
                 file.close();
             }

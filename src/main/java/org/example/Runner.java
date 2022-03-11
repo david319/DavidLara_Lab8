@@ -1,5 +1,6 @@
 package org.example;
 
+import javafx.scene.control.ColorPicker;
 import javafx.scene.paint.Color;
 
 public class Runner{
@@ -8,11 +9,11 @@ public class Runner{
     private int id;
     private int distance;
     private String nameR;
-    private Color color;
+    private String color;
     private String car;
 
     // Constructor
-    public Runner(int id, int distance, String nameR, Color color, String car) {
+    public Runner(int id, int distance, String nameR, String color, String car) {
         this.id = id;
         this.distance = distance;
         this.nameR = nameR;
@@ -46,11 +47,11 @@ public class Runner{
         this.nameR = nameR;
     }
 
-    public Color getColor() {
+    public String getColor() {
         return color;
     }
 
-    public void setColor(Color color) {
+    public void setColor(String color) {
         this.color = color;
     }
 
