@@ -14,6 +14,7 @@ import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 import static org.example.Files.*;
 
@@ -81,9 +82,9 @@ public class PrimaryController {
     }
 
     private static String toHexString(Color color) {
-        int r = ((int) Math.round(color.getRed()     * 255)) << 24;
-        int g = ((int) Math.round(color.getGreen()   * 255)) << 16;
-        int b = ((int) Math.round(color.getBlue()    * 255)) << 8;
+        int r = ((int) Math.round(color.getRed() * 255)) << 24;
+        int g = ((int) Math.round(color.getGreen() * 255)) << 16;
+        int b = ((int) Math.round(color.getBlue() * 255)) << 8;
         int a = ((int) Math.round(color.getOpacity() * 255));
         return String.format("#%08X", (r + g + b + a));
     }
@@ -130,53 +131,79 @@ public class PrimaryController {
         }
     }
 
-    public void startAction() {
-        Run run = new Run();
-        run.start();
-    }
-
-    public void pauseAction() {
-        Run run = new Run();
-        //run.pause();
-    }
-
-    public void restartAction() {
-        Run run = new Run();
-        //run.restartRun();
-    }
-
-    public void resetAction() {
-        Run run = new Run();
-        //run.resetRun();
-    }
-
-    class Run extends Thread {
-
-        public void start() {
-            try {
+    Task tarea = new Task() {
+        @Override
+        protected Object call() throws Exception {
+            do {
                 for (Runner runner : runners) {
-                    runner.setDistance(runner.getDistance() + 1);
-                    if (runner.getDistance() == distanceT) {
-                        runner.setDistance(0);
+                    switch (runner.getCar()) {
+                        case "McQueen":
+                            runner.setDistance(runner.getDistance() + (int) (Math.random() * (180 - 30)));
+                            break;
+                        case "Convertible":
+                            runner.setDistance(runner.getDistance() + (int) (Math.random() * (200 - 50)));
+                            break;
+                        case "Nascar":
+                            runner.setDistance(runner.getDistance() + (int) (Math.random() * (250 - 100)));
+                            break;
+                    }
+                    if (runner.getDistance() >= distanceT) {
+                        runner.setDistance(distanceT);
                     } else {
-                        runner.setDistance(runner.getDistance() + 1);
+                        runner.setDistance(runner.getDistance() + (int) (Math.random() * (180 - 30)));
+                        int progress = ((runner.getDistance() * 100) / distanceT);
+                        if (progress > 100) {
+                            progress = 100;
+                            runProgress.setProgress(progress);
+                            infoRun.refresh();
+                            break;
+                        } else {
+                            runProgress.setProgress(progress / 100.0);
+                            infoRun.refresh();
+                        }
+
+                        runProgress.setStyle("-fx-accent: " + runners.get(0).getColor());
+                        infoRun.refresh();
+
+                        Thread.sleep(1000);
+                    }
+                    if (isCancelled()) {
+                        break;
+                    }
+                    if (runProgress.getProgress() == 1.0) {
+                        break;
                     }
                 }
-                Platform.runLater(() -> {
-                    runProgress.setStyle("-fx-accent: " + runners.get(0).getColor());
-                    runProgress.setProgress(runProgress.getProgress() + 0.01);
-                    infoRun.refresh();
-                });
-            } catch (Exception e) {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Error");
-                alert.setHeaderText("Error");
-                alert.setContentText(e.getMessage());
-                alert.showAndWait();
-            }
+
+            } while (runProgress.getProgress() != 1);
+            infoRun.refresh();
+            return null;
+        }
+    };
+
+
+    public void startRun() {
+        new Thread(tarea).start();
+    }
+
+    public void pauseRun() {
+        if (tarea.isRunning()) {
+            tarea.cancel();
+        } else {
+            tarea.run();
         }
     }
 
+    public void resetRun() {
+        tarea.cancel();
+        runProgress.setProgress(0);
+        for (Runner runner : runners) {
+            runner.setDistance(0);
+            infoRun.refresh();
+        }
+        infoRun.refresh();
+    }
 
 }
+
 
