@@ -1,8 +1,6 @@
 package org.example;
 
 import javafx.scene.control.Alert;
-import javafx.scene.control.ColorPicker;
-import javafx.scene.paint.Color;
 
 import java.io.IOException;
 import java.io.RandomAccessFile;
