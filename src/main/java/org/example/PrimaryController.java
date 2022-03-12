@@ -193,33 +193,39 @@ public class PrimaryController {
                 runProgress.setProgress(workDone / max);
             });
         }
-
-        public void stopRun() {
-            tarea.cancel();
-        }
-
     };
 
+    Thread thread = new Thread(tarea);
 
-    public void startRun() {
-        new Thread(tarea).start();
-    }
-
-    public void pauseRun() {
-        if (tarea.isRunning()) {
-            tarea.cancel();
-        } else {
-            tarea.run();
+    @FXML
+    private void btnStart() {
+        try {
+            if (!thread.isAlive()) {
+                thread.start();
+            }
+            if (thread.isDaemon()) {
+                thread.setDaemon(false);
+            } else {
+                thread.setDaemon(true);
+                thread.start();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
-    public void resetRun() {
-        tarea.cancel();
-        runProgress.setProgress(0);
+    @FXML
+    private void btnStop() {
+        thread.stop();
+    }
+
+    @FXML
+    private void btnReset() {
         for (Runner runner : runners) {
             runner.setDistance(0);
         }
         infoRun.refresh();
+        runProgress.setProgress(0);
     }
 
 

@@ -3,95 +3,84 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="459.0"
-            prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="org.example.PrimaryController">
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="459.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.PrimaryController">
     <children>
-        <Pane layoutX="200.0" layoutY="100.0" prefHeight="423.0" prefWidth="600.0" AnchorPane.bottomAnchor="-0.0"
-              AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <Pane layoutX="200.0" layoutY="100.0" prefHeight="423.0" prefWidth="600.0" AnchorPane.bottomAnchor="-0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
-                <Button fx:id="btnStart" layoutX="14.0" layoutY="28.0" mnemonicParsing="false"
-                        onMouseClicked="#startRun" prefHeight="27.0" prefWidth="82.0" text="Comenzar">
+                <Button fx:id="btnStart" layoutX="14.0" layoutY="28.0" mnemonicParsing="false" onMouseClicked="#btnStart" prefHeight="27.0" prefWidth="82.0" text="Comenzar">
                     <font>
-                        <Font name="System Bold" size="13.0"/>
+                        <Font name="System Bold" size="13.0" />
                     </font>
                 </Button>
-                <Button fx:id="btnPause" layoutX="105.0" layoutY="29.0" mnemonicParsing="false"
-                        onMouseClicked="#pauseRun" prefHeight="25.0" prefWidth="68.0" text="Pausar">
+                <Button fx:id="btnStop" layoutX="105.0" layoutY="29.0" mnemonicParsing="false" onMouseClicked="#btnStop" prefHeight="25.0" prefWidth="68.0" text="Pausar">
                     <font>
-                        <Font name="System Bold" size="13.0"/>
+                        <Font name="System Bold" size="13.0" />
                     </font>
                 </Button>
-                <Label fx:id="labelNameT" layoutX="185.0" layoutY="31.0" prefHeight="18.0" prefWidth="82.0"
-                       text="Pista:">
+                <Label fx:id="labelNameT" layoutX="185.0" layoutY="31.0" prefHeight="18.0" prefWidth="82.0" text="Pista:">
                     <font>
-                        <Font name="System Bold" size="14.0"/>
+                        <Font name="System Bold" size="14.0" />
                     </font>
                 </Label>
-                <Label fx:id="largeTrack" layoutX="352.0" layoutY="33.0" prefHeight="20.0" prefWidth="97.0"
-                       text="Largo:">
+                <Label fx:id="largeTrack" layoutX="352.0" layoutY="33.0" prefHeight="20.0" prefWidth="97.0" text="Largo:">
                     <font>
-                        <Font name="System Bold" size="14.0"/>
+                        <Font name="System Bold" size="14.0" />
                     </font>
                 </Label>
-                <ProgressBar fx:id="runProgress" layoutX="7.0" layoutY="66.0" prefHeight="55.0" prefWidth="587.0"
-                             progress="0.0"/>
+                <ProgressBar fx:id="runProgress" layoutX="7.0" layoutY="66.0" prefHeight="55.0" prefWidth="587.0" progress="0.0" />
                 <TableView fx:id="infoRun" layoutX="7.0" layoutY="129.0" prefHeight="126.0" prefWidth="587.0">
                     <columns>
-                        <TableColumn fx:id="Id" prefWidth="192.0" text="Identificador"/>
-                        <TableColumn fx:id="Runner" prefWidth="199.0" text="Corredor"/>
-                        <TableColumn fx:id="distance" prefWidth="194.0" text="Distancia"/>
+                        <TableColumn fx:id="Id" prefWidth="192.0" text="Identificador" />
+                        <TableColumn fx:id="Runner" prefWidth="199.0" text="Corredor" />
+                        <TableColumn fx:id="distance" prefWidth="194.0" text="Distancia" />
                     </columns>
                 </TableView>
-                <ComboBox fx:id="addRunner" layoutX="21.0" layoutY="264.0" prefWidth="150.0"/>
-                <Button fx:id="btnAddRunner" layoutX="185.0" layoutY="264.0" mnemonicParsing="false"
-                        onMouseClicked="#addRunnerAction" text="Agregar">
+                <ComboBox fx:id="addRunner" layoutX="21.0" layoutY="264.0" prefWidth="150.0" />
+                <Button fx:id="btnAddRunner" layoutX="185.0" layoutY="264.0" mnemonicParsing="false" onMouseClicked="#addRunnerAction" text="Agregar">
                     <font>
-                        <Font name="System Bold" size="12.0"/>
+                        <Font name="System Bold" size="12.0" />
                     </font>
                 </Button>
-                <TextField fx:id="idRunner" layoutX="136.0" layoutY="303.0"/>
+                <TextField fx:id="idRunner" layoutX="136.0" layoutY="303.0" />
                 <Label layoutX="7.0" layoutY="307.0" text="Numero Identificador:">
                     <font>
-                        <Font name="System Bold" size="12.0"/>
+                        <Font name="System Bold" size="12.0" />
                     </font>
                 </Label>
                 <Label layoutX="7.0" layoutY="336.0" text="Nombre Corredor:">
                     <font>
-                        <Font name="System Bold" size="12.0"/>
+                        <Font name="System Bold" size="12.0" />
                     </font>
                 </Label>
-                <TextField fx:id="nameRunner" layoutX="136.0" layoutY="332.0"/>
-                <ComboBox fx:id="typeCar" layoutX="7.0" layoutY="367.0" prefHeight="25.0" prefWidth="103.0"/>
-                <ColorPicker fx:id="colorRunner" layoutX="142.0" layoutY="367.0"/>
-                <Button fx:id="btnSaveRunner" layoutX="170.0" layoutY="405.0" mnemonicParsing="false"
-                        onMouseClicked="#saveRunnerAction" prefHeight="27.0" prefWidth="82.0" text="Guardar">
+                <TextField fx:id="nameRunner" layoutX="136.0" layoutY="332.0" />
+                <ComboBox fx:id="typeCar" layoutX="7.0" layoutY="367.0" prefHeight="25.0" prefWidth="103.0" />
+                <ColorPicker fx:id="colorRunner" layoutX="142.0" layoutY="367.0" />
+                <Button fx:id="btnSaveRunner" layoutX="170.0" layoutY="405.0" mnemonicParsing="false" onMouseClicked="#saveRunnerAction" prefHeight="27.0" prefWidth="82.0" text="Guardar">
                     <font>
-                        <Font name="System Bold" size="13.0"/>
+                        <Font name="System Bold" size="13.0" />
                     </font>
                 </Button>
                 <Label layoutX="341.0" layoutY="267.0" text="Nombre Pista:">
                     <font>
-                        <Font name="System Bold" size="13.0"/>
+                        <Font name="System Bold" size="13.0" />
                     </font>
                 </Label>
-                <TextField fx:id="nameTrack" layoutX="437.0" layoutY="264.0"/>
-                <TextField fx:id="distanceTrack" layoutX="437.0" layoutY="303.0"/>
+                <TextField fx:id="nameTrack" layoutX="437.0" layoutY="264.0" />
+                <TextField fx:id="distanceTrack" layoutX="437.0" layoutY="303.0" />
                 <Label layoutX="384.0" layoutY="306.0" prefHeight="19.0" prefWidth="42.0" text="Largo:">
                     <font>
-                        <Font name="System Bold" size="13.0"/>
+                        <Font name="System Bold" size="13.0" />
                     </font>
                 </Label>
-                <Button fx:id="btnUseTrack" layoutX="463.0" layoutY="345.0" mnemonicParsing="false"
-                        onMouseClicked="#useTrackAction" prefHeight="25.0" prefWidth="97.0" text="Usar Pista">
+                <Button fx:id="btnUseTrack" layoutX="463.0" layoutY="345.0" mnemonicParsing="false" onMouseClicked="#useTrackAction" prefHeight="25.0" prefWidth="97.0" text="Usar Pista">
                     <font>
-                        <Font name="System Bold" size="12.0"/>
+                        <Font name="System Bold" size="12.0" />
                     </font>
                 </Button>
-                <Button fx:id="btnRestart" layoutX="463.0" layoutY="380.0" mnemonicParsing="false"
-                        onMouseClicked="#resetRun" prefHeight="25.0" prefWidth="97.0" text="Reiniciar">
+                <Button fx:id="btnReset" layoutX="463.0" layoutY="380.0" mnemonicParsing="false" onMouseClicked="#btnReset" prefHeight="25.0" prefWidth="97.0" text="Reiniciar">
                     <font>
-                        <Font name="System Bold" size="12.0"/>
+                        <Font name="System Bold" size="12.0" />
                     </font>
                 </Button>
             </children>
