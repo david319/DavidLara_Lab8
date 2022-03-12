@@ -131,6 +131,26 @@ public class PrimaryController {
         }
     }
 
+    // Cambiar la posicion de los runners en la tabla por la distancia recorrida
+    public void changePosition(int id, int distance) {
+        for (Runner runner : runners) {
+            if (runner.getId() == id && runner.getDistance() < distance) {
+                runner.setDistance(distance);
+                ObservableList<Runner> list = infoRun.getItems();
+                list.remove(runner);
+                list.add(runner);
+                infoRun.setItems(list);
+            } else if (runner.getId() == id && runner.getDistance() > distance) {
+                runner.setDistance(distance);
+                ObservableList<Runner> list = infoRun.getItems();
+                list.remove(runner);
+                list.add(runner);
+                infoRun.setItems(list);
+                break;
+            }
+        }
+    }
+
     Task tarea = new Task() {
         @Override
         protected Object call() throws Exception {
@@ -141,35 +161,49 @@ public class PrimaryController {
                             runner.setDistance(runner.getDistance() + (int) (Math.random() * (180 - 30)));
                             break;
                         case "Convertible":
-                            runner.setDistance(runner.getDistance() + (int) (Math.random() * (200 - 50)));
+                            runner.setDistance(runner.getDistance() + (int) (Math.random() * (200 - 20)));
                             break;
                         case "Nascar":
-                            runner.setDistance(runner.getDistance() + (int) (Math.random() * (250 - 100)));
+                            runner.setDistance(runner.getDistance() + (int) (Math.random() * (180 - 40)));
                             break;
                     }
-                    if (runner.getDistance() >= distanceT) {
-                        runner.setDistance(distanceT);
-                    } else {
-                        runner.setDistance(runner.getDistance() + (int) (Math.random() * (180 - 30)));
-                        double progress = (runner.getDistance() * 100.0 / distanceT);
-                        updateProgress(progress, 100);
-                        System.out.println(progress);
-                        runProgress.setStyle("-fx-accent: " + runners.get(0).getColor());
-                        infoRun.refresh();
-                        Thread.sleep(1000);
+                    double progress = (runner.getDistance() * 100.0 / distanceT);
+                    progress = progress / 100;
+                    updateProgress(progress, 1);
+                    System.out.println(progress);
+                    for (Runner runner1 : runners) {
+                        runProgress.setStyle("-fx-accent: " + runner1.getColor() + ";");
                     }
+
+                    if (progress >= 1) {
+                        updateMessage("Finished");
+                        updateProgress(1, 1);
+                        updateMessage("The winner is: " + runner.getNameR());
+                        tarea.cancel();
+                    }
+                    infoRun.refresh();
+                    Thread.sleep(1000);
+
+
+                    changePosition(runner.getId(), runner.getDistance());
+                    infoRun.refresh();
                 }
 
                 if (isCancelled()) {
                     break;
                 }
-            } while (runProgress.getProgress() != 1);
-            infoRun.refresh();
+            } while (runProgress.getProgress() < 1);
             return null;
         }
 
         public void updateProgress(double workDone, double max) {
-            runProgress.setProgress(workDone / max);
+            Platform.runLater(() -> {
+                runProgress.setProgress(workDone / max);
+            });
+        }
+
+        public void stopRun() {
+            tarea.cancel();
         }
 
     };
@@ -192,10 +226,10 @@ public class PrimaryController {
         runProgress.setProgress(0);
         for (Runner runner : runners) {
             runner.setDistance(0);
-            infoRun.refresh();
         }
         infoRun.refresh();
     }
+
 
 }
 
