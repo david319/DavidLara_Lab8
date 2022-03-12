@@ -151,34 +151,27 @@ public class PrimaryController {
                         runner.setDistance(distanceT);
                     } else {
                         runner.setDistance(runner.getDistance() + (int) (Math.random() * (180 - 30)));
-                        int progress = ((runner.getDistance() * 100) / distanceT);
-                        if (progress > 100) {
-                            progress = 100;
-                            runProgress.setProgress(progress);
-                            infoRun.refresh();
-                            break;
-                        } else {
-                            runProgress.setProgress(progress / 100.0);
-                            infoRun.refresh();
-                        }
-
+                        double progress = (runner.getDistance() * 100.0 / distanceT);
+                        updateProgress(progress, 100);
+                        System.out.println(progress);
                         runProgress.setStyle("-fx-accent: " + runners.get(0).getColor());
                         infoRun.refresh();
-
                         Thread.sleep(1000);
-                    }
-                    if (isCancelled()) {
-                        break;
-                    }
-                    if (runProgress.getProgress() == 1.0) {
-                        break;
                     }
                 }
 
+                if (isCancelled()) {
+                    break;
+                }
             } while (runProgress.getProgress() != 1);
             infoRun.refresh();
             return null;
         }
+
+        public void updateProgress(double workDone, double max) {
+            runProgress.setProgress(workDone / max);
+        }
+
     };
 
 
